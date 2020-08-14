@@ -5,121 +5,104 @@ import java.util.Random;
 
 
 public class GameLogic {
-    static int spaceNumber;
+    private int spaceNumber;
+    private static Field field = new Field();
+    private Scanner scanner = new Scanner(System.in);
+    private Random rand = new Random();
+    private String endGameMessage;
+    private boolean gameOver;
+    
+    public void start () {
+        intro();
 
-    public static Field f = new Field();
-    static Scanner scanner = new Scanner(System.in);
-    static Random rand = new Random();
-    static String endGameMessage;
-    static boolean gameOver;
+        while (!getGameOver()) {
+            playersMove();
+            show();
+            if (gameOver()) {
+                break;
+            }
+            computersMove();
+            show();
+            if (gameOver()) {
+                break;
+            }
+        }
+        showWinnerName();
+        
+    }
+    
 
-    public static void intro()    {
+    private void intro()    {
         System.out.println("-----TIC-TAC-TOE-----");
         System.out.println("These are the spaces numbers: ");
-        System.out.println("1 | 2 | 3");
-        System.out.println("---------");
-        System.out.println("4 | 5 | 6");
-        System.out.println("---------");
-        System.out.println("7 | 8 | 9");
+        field.showField();
+
     }
 
-    public static void playersMove() {
+    private void playersMove() {
         do {
             System.out.println("Choose a space - type a number from 1 to 9:");
-            spaceNumber = scanner.nextInt();
+            spaceNumber = scanner.nextInt() - 1;
 
-            if (!f.checkIfSpaceIsFree(spaceNumber)) {
-                while (!f.checkIfSpaceIsFree(spaceNumber)) {
+            if (!field.checkIfSpaceIsFree(spaceNumber)) {
+                while (!field.checkIfSpaceIsFree(spaceNumber)) {
                     System.out.println("Invalid space number! Type another space number: ");
                     spaceNumber = scanner.nextInt();
                 }
             }
-            f.setSpaceNumber(spaceNumber);
-            f.setMark("X");
+            field.setValue(spaceNumber, "X");
 
 
         } while (spaceNumber < 1 || spaceNumber > 9);
         System.out.println("Your space was marked with X: ");
     }
 
-    //this is method for regular program run
-    public static void computersMove() {
+    private void computersMove() {
         System.out.println("This is a computer's move (space was marked with 0): ");
         spaceNumber = Math.round(rand.nextInt(10) + 1);
-        boolean spaceIsFree = f.checkIfSpaceIsFree(spaceNumber);
+        boolean spaceIsFree = field.checkIfSpaceIsFree(spaceNumber);
         if (!spaceIsFree) {
-            while (!f.checkIfSpaceIsFree(spaceNumber)) {
+            while (!field.checkIfSpaceIsFree(spaceNumber)) {
                 spaceNumber = Math.round(rand.nextInt(10) + 1);
             }
-            f.setSpaceNumber(spaceNumber);
-            f.setMark("0");
+            field.setValue(spaceNumber, "0");
         } else {
-            f.setSpaceNumber(spaceNumber);
-            f.setMark("0");
+            field.setValue(spaceNumber, "0");
         }
 
     }
 
-    //computersMove method for testing
-//    public static void computersMove() {
-//        System.out.println("This is a computer's move (space was marked with 0): ");
-//
-//        do {
-//            System.out.println("Choose a space - type a number from 1 to 9:");
-//            spaceNumber = scanner.nextInt();
-//
-//            if (!f.checkIfSpaceIsFree(spaceNumber)) {
-//                while (!f.checkIfSpaceIsFree(spaceNumber)) {
-//                    System.out.println("Invalid space number! Type another space number: ");
-//                    spaceNumber = scanner.nextInt();
-//                }
-//            }
-//            f.setSpaceNumber(spaceNumber);
-//            f.setMark("0");
-//
-//
-//        } while (spaceNumber < 1 || spaceNumber > 9);
-//        System.out.println("Your space was marked with X: ");
-//    }
-
-
-
-
-
-
-
-
-    public static void show () {
-        f.showField();
+    private void show () {
+        field.showField();
     }
 
 
-    public static boolean gameOver  () {
-        if  ((f.getSpace1().equals("X") && f.getSpace2().equals("X") && f.getSpace3().equals("X"))||
-            (f.getSpace4().equals("X") && f.getSpace5().equals("X") && f.getSpace6().equals("X")) ||
-            (f.getSpace7().equals("X") && f.getSpace8().equals("X") && f.getSpace9().equals("X")) ||
-            (f.getSpace1().equals("X") && f.getSpace4().equals("X") && f.getSpace7().equals("X")) ||
-            (f.getSpace2().equals("X") && f.getSpace5().equals("X") && f.getSpace8().equals("X")) ||
-            (f.getSpace3().equals("X") && f.getSpace6().equals("X") && f.getSpace9().equals("X")) ||
-            (f.getSpace1().equals("X") && f.getSpace5().equals("X") && f.getSpace9().equals("X")) ||
-            (f.getSpace3().equals("X") && f.getSpace5().equals("X") && f.getSpace7().equals("X"))) {
+    private boolean gameOver  () {
+        if  ((field.getValues(1).equals("X") && field.getValues(2).equals("X") && field.getValues(3).equals("X"))||
+            (field.getValues(4).equals("X") && field.getValues(5).equals("X") && field.getValues(6).equals("X")) ||
+            (field.getValues(7).equals("X") && field.getValues(8).equals("X") && field.getValues(9).equals("X")) ||
+            (field.getValues(1).equals("X") && field.getValues(4).equals("X") && field.getValues(7).equals("X")) ||
+            (field.getValues(2).equals("X") && field.getValues(5).equals("X") && field.getValues(8).equals("X")) ||
+            (field.getValues(3).equals("X") && field.getValues(6).equals("X") && field.getValues(9).equals("X")) ||
+            (field.getValues(1).equals("X") && field.getValues(5).equals("X") && field.getValues(9).equals("X")) ||
+            (field.getValues(3).equals("X") && field.getValues(5).equals("X") && field.getValues(7).equals("X"))) {
             endGameMessage = "You wins!";
             gameOver = true;
         } else if (
-            (f.getSpace4().equals("0") && f.getSpace5().equals("0") && f.getSpace6().equals("0")) ||
-            (f.getSpace1().equals("0") && f.getSpace2().equals("0") && f.getSpace3().equals("0")) ||
-            (f.getSpace7().equals("0") && f.getSpace8().equals("0") && f.getSpace9().equals("0")) ||
-            (f.getSpace1().equals("0") && f.getSpace4().equals("0") && f.getSpace7().equals("0")) ||
-            (f.getSpace2().equals("0") && f.getSpace5().equals("0") && f.getSpace8().equals("0")) ||
-            (f.getSpace3().equals("0") && f.getSpace6().equals("0") && f.getSpace9().equals("0")) ||
-            (f.getSpace1().equals("0") && f.getSpace5().equals("0") && f.getSpace9().equals("0")) ||
-            (f.getSpace3().equals("0") && f.getSpace5().equals("0") && f.getSpace7().equals("0"))) {
+            ((field.getValues(1).equals("0") && field.getValues(2).equals("0") && field.getValues(3).equals("0"))||
+            (field.getValues(4).equals("0") && field.getValues(5).equals("0") && field.getValues(6).equals("0")) ||
+            (field.getValues(7).equals("0") && field.getValues(8).equals("0") && field.getValues(9).equals("0")) ||
+            (field.getValues(1).equals("0") && field.getValues(4).equals("0") && field.getValues(7).equals("0")) ||
+            (field.getValues(2).equals("0") && field.getValues(5).equals("0") && field.getValues(8).equals("0")) ||
+            (field.getValues(3).equals("0") && field.getValues(6).equals("0") && field.getValues(9).equals("0")) ||
+            (field.getValues(1).equals("0") && field.getValues(5).equals("0") && field.getValues(9).equals("0")) ||
+            (field.getValues(3).equals("0") && field.getValues(5).equals("0") && field.getValues(7).equals("0")))) {
             endGameMessage = "Computer wins!";
             gameOver = true;
         } else if
-                (!f.getSpace1().equals(" ") && !f.getSpace2().equals(" ") && !f.getSpace3().equals(" ") &&
-                !f.getSpace4().equals(" ") && !f.getSpace5().equals(" ") && !f.getSpace6().equals(" ") &&
-                !f.getSpace7().equals(" ") && !f.getSpace8().equals(" ") && !f.getSpace9().equals(" "))
+                (!field.getValues(1).equals("1") && !field.getValues(2).equals("2") && !field.getValues(3).equals("3") &&
+                !field.getValues(4).equals("4") && !field.getValues(5).equals("5") && !field.getValues(6).equals("6") &&
+                !field.getValues(7).equals("7") && !field.getValues(8).equals("8") && !field.getValues(9).equals("9"))
         {
             endGameMessage = "Draw!";
             gameOver = true;
@@ -129,11 +112,11 @@ public class GameLogic {
         return gameOver;
     }
 
-    public static void showWinnerName () {
+    private void showWinnerName () {
         System.out.println(endGameMessage);
     }
 
-    public static boolean getGameOver() {
+    private boolean getGameOver() {
         return gameOver;
     }
 
