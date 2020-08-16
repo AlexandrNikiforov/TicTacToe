@@ -5,7 +5,7 @@ class Field {
     private String[] values = {"1","2","3","4","5","6","7","8","9"};
 
     public void setValue (int index, String value) {
-        if (index > 0 && index < 10) {
+        if (index >= 0 && index < 9) {
             this.values[index] = value;
         } else
             System.out.println("Invalid value!");
@@ -20,9 +20,6 @@ class Field {
         }
         return spaceIsFree;
     }
-
-
-
 
     public void showField() {
         System.out.println(values[0] + " | " + values[1] + " | " + values[2]);
