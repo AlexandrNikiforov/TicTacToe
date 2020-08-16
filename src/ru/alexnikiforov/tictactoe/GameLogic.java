@@ -11,6 +11,7 @@ public class GameLogic {
     private Random rand = new Random();
     private String endGameMessage;
     private boolean gameOver;
+    private int messageNumber;
     
     public void start () {
         intro();
@@ -27,26 +28,27 @@ public class GameLogic {
                 break;
             }
         }
-        showWinnerName();
     }
     
 
     private void intro()    {
-        System.out.println("-----TIC-TAC-TOE-----");
-        System.out.println("These are the spaces numbers: ");
+        printsMessages ();
+        messageNumber = 0;
         field.showField();
 
     }
 
     private void playersMove() {
         do {
+            messageNumber = 1;
             System.out.println("Choose a space - type a number from 1 to 9:");
             spaceNumber = scanner.nextInt() - 1;
             if (spaceNumber >= 0 && spaceNumber < 9) {
 
                 if (!field.checkIfSpaceIsFree(spaceNumber)) {
                     while (!field.checkIfSpaceIsFree(spaceNumber)) {
-                        System.out.println("Invalid space number! Type another space number: ");
+                        messageNumber = 2;
+                        printsMessages ();
                         spaceNumber = scanner.nextInt();
                     }
                 }
@@ -54,15 +56,18 @@ public class GameLogic {
 
 
             } else {
-                System.out.println("Invalid value!");
+                messageNumber = 3;
+                printsMessages ();
             }
         }
             while (spaceNumber < 0 || spaceNumber > 8) ;
-            System.out.println("Your space was marked with X: ");
+            messageNumber = 4;
+            printsMessages ();
         }
 
     private void computersMove() {
-        System.out.println("This is a computer's move (space was marked with 0): ");
+        messageNumber = 5;
+        printsMessages ();
         spaceNumber = Math.round(rand.nextInt(9));
         boolean spaceIsFree = field.checkIfSpaceIsFree(spaceNumber);
         if (!spaceIsFree) {
@@ -90,7 +95,9 @@ public class GameLogic {
             (field.getValues(2).equals("X") && field.getValues(5).equals("X") && field.getValues(8).equals("X")) ||
             (field.getValues(0).equals("X") && field.getValues(4).equals("X") && field.getValues(8).equals("X")) ||
             (field.getValues(2).equals("X") && field.getValues(4).equals("X") && field.getValues(6).equals("X"))) {
-            endGameMessage = "You wins!";
+
+            messageNumber = 6;
+            printsMessages ();
             gameOver = true;
         } else if (
             ((field.getValues(0).equals("0") && field.getValues(1).equals("0") && field.getValues(2).equals("0"))||
@@ -101,14 +108,16 @@ public class GameLogic {
             (field.getValues(2).equals("0") && field.getValues(5).equals("0") && field.getValues(8).equals("0")) ||
             (field.getValues(0).equals("0") && field.getValues(4).equals("0") && field.getValues(8).equals("0")) ||
             (field.getValues(2).equals("0") && field.getValues(4).equals("0") && field.getValues(6).equals("0")))) {
-            endGameMessage = "Computer wins!";
+            messageNumber = 7;
+            printsMessages ();
             gameOver = true;
         } else if
                 (!field.getValues(0).equals("1") && !field.getValues(1).equals("2") && !field.getValues(2).equals("3") &&
                 !field.getValues(3).equals("4") && !field.getValues(4).equals("5") && !field.getValues(5).equals("6") &&
                 !field.getValues(6).equals("7") && !field.getValues(7).equals("8") && !field.getValues(8).equals("9"))
         {
-            endGameMessage = "Draw!";
+            messageNumber = 8;
+            printsMessages ();
             gameOver = true;
         } else {
             gameOver = false;
@@ -116,9 +125,50 @@ public class GameLogic {
         return gameOver;
     }
 
-    private void showWinnerName () {
-        System.out.println(endGameMessage);
+
+    private void printsMessages () {
+
+        switch (messageNumber) {
+
+            case 0:
+                System.out.println("-----TIC-TAC-TOE-----");
+                System.out.println("These are the spaces numbers: ");
+                break;
+
+            case 1:
+                System.out.println("Choose a space - type a number from 1 to 9:");
+                break;
+
+            case 2:
+                System.out.println("Invalid space number! Type another space number: ");
+                break;
+
+            case 3:
+                System.out.println("Invalid space number! Type another space number:");
+                break;
+
+            case 4:
+                System.out.println("Your space was marked with X: ");
+                break;
+
+            case 5:
+                System.out.println("This is a computer's move (space was marked with 0): ");
+                break;
+
+            case 6:
+                System.out.println("You wins!");
+                break;
+
+            case 7:
+                System.out.println("Computer wins!");
+                break;
+
+            case 8:
+                System.out.println("Draw!");
+                break;
+        }
     }
+
 
     private boolean getGameOver() {
         return gameOver;
