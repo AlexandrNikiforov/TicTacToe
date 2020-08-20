@@ -1,7 +1,6 @@
-package ru.alexnikiforov.tictactoe;
+package main.java.ru.tictactoe;
 
 class Field {
-    private int spaceNumber;
     private String[] values = {"1","2","3","4","5","6","7","8","9"};
 
     public void setValue (int index, String value) {
@@ -11,12 +10,27 @@ class Field {
             System.out.println("Invalid value!");
     }
 
-    public  boolean checkIfSpaceIsFree (int index) {
+    private boolean isNumeric (String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int i = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkIfSpaceIsFree (int index) {
         boolean spaceIsFree = false;
-        if (values[index].equals("X") || values[index].equals("0")) {
-            spaceIsFree = false;
-        } else {
+        if (index <0 || index >8) {
+            return false;
+        }
+          else if (isNumeric(values[index]) ) {
             spaceIsFree = true;
+        } else {
+            spaceIsFree = false;
         }
         return spaceIsFree;
     }

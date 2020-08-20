@@ -1,4 +1,4 @@
-package ru.alexnikiforov.tictactoe;
+package main.java.ru.tictactoe;
 
 public class GameRunner {
 

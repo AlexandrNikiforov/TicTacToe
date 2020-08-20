@@ -1,4 +1,4 @@
-package ru.alexnikiforov.tictactoe;
+package main.java.ru.tictactoe;
 
 import java.util.Scanner;
 import java.util.Random;
@@ -46,10 +46,10 @@ public class GameLogic {
             if (spaceNumber >= 0 && spaceNumber < 9) {
 
                 if (!field.checkIfSpaceIsFree(spaceNumber)) {
-                    while (!field.checkIfSpaceIsFree(spaceNumber)) {
+                    while (!field.checkIfSpaceIsFree(spaceNumber) || spaceNumber<0 || spaceNumber>8) {
                         messageNumber = 2;
                         printsMessages ();
-                        spaceNumber = scanner.nextInt();
+                        spaceNumber = scanner.nextInt()-1;
                     }
                 }
                 field.setValue(spaceNumber, "X");
@@ -74,9 +74,9 @@ public class GameLogic {
             while (!field.checkIfSpaceIsFree(spaceNumber)) {
                 spaceNumber = Math.round(rand.nextInt(9));
             }
-            field.setValue(spaceNumber, "0");
+            field.setValue(spaceNumber, "O");
         } else {
-            field.setValue(spaceNumber, "0");
+            field.setValue(spaceNumber, "O");
         }
 
     }
@@ -174,13 +174,5 @@ public class GameLogic {
         return gameOver;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
 }
