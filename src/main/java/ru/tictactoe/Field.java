@@ -10,31 +10,6 @@ class Field {
             System.out.println("Invalid value!");
     }
 
-    private boolean isNumeric (String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-        try {
-            int i = Integer.parseInt(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean checkIfSpaceIsFree (int index) {
-        boolean spaceIsFree = false;
-        if (index <0 || index >8) {
-            return false;
-        }
-          else if (isNumeric(values[index]) ) {
-            spaceIsFree = true;
-        } else {
-            spaceIsFree = false;
-        }
-        return spaceIsFree;
-    }
-
     public void showField() {
         System.out.println(values[0] + " | " + values[1] + " | " + values[2]);
         System.out.println("---------");
@@ -43,10 +18,6 @@ class Field {
         System.out.println(values[6] + " | " + values[7] + " | " + values[8]);
 
         }
-
-    public String[] getValues() {
-        return values;
-    }
 
     public String getValues(int index) {
         return values[index];

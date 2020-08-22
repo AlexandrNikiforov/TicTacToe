@@ -9,7 +9,6 @@ public class GameLogic {
     private  Field field = new Field();
     private Scanner scanner = new Scanner(System.in);
     private Random rand = new Random();
-    private String endGameMessage;
     private boolean gameOver;
     private int messageNumber;
     
@@ -45,8 +44,8 @@ public class GameLogic {
             spaceNumber = scanner.nextInt() - 1;
             if (spaceNumber >= 0 && spaceNumber < 9) {
 
-                if (!field.checkIfSpaceIsFree(spaceNumber)) {
-                    while (!field.checkIfSpaceIsFree(spaceNumber) || spaceNumber<0 || spaceNumber>8) {
+                if (!checkIfSpaceIsFree(spaceNumber)) {
+                    while (!checkIfSpaceIsFree(spaceNumber) || spaceNumber<0 || spaceNumber>8) {
                         messageNumber = 2;
                         printsMessages ();
                         spaceNumber = scanner.nextInt()-1;
@@ -69,9 +68,9 @@ public class GameLogic {
         messageNumber = 5;
         printsMessages ();
         spaceNumber = Math.round(rand.nextInt(9));
-        boolean spaceIsFree = field.checkIfSpaceIsFree(spaceNumber);
+        boolean spaceIsFree = checkIfSpaceIsFree(spaceNumber);
         if (!spaceIsFree) {
-            while (!field.checkIfSpaceIsFree(spaceNumber)) {
+            while (!checkIfSpaceIsFree(spaceNumber)) {
                 spaceNumber = Math.round(rand.nextInt(9));
             }
             field.setValue(spaceNumber, "O");
@@ -79,6 +78,33 @@ public class GameLogic {
             field.setValue(spaceNumber, "O");
         }
 
+    }
+
+
+    private boolean isNumeric (String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int i = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+
+    }
+
+    public boolean checkIfSpaceIsFree (int index) {
+        boolean spaceIsFree = false;
+        if (index <0 || index >8) {
+            return false;
+        }
+        else if (isNumeric(field.getValues(index))) {
+            spaceIsFree = true;
+        } else {
+            spaceIsFree = false;
+        }
+        return spaceIsFree;
     }
 
     private void show () {
